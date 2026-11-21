@@ -1,0 +1,105 @@
+CREATE DATABASE IF NOT EXISTS inkora_books CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE inkora_books;
+
+CREATE TABLE IF NOT EXISTS usuario (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(120) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL,
+  foto VARCHAR(500) NULL,
+  bio TEXT NULL,
+  tipo ENUM('admin','autor') NOT NULL DEFAULT 'autor',
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS galeria_autor (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  usuario_id INT UNSIGNED NOT NULL,
+  imagem VARCHAR(500) NOT NULL,
+  legenda VARCHAR(180) NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_galeria_autor_usuario (usuario_id),
+  CONSTRAINT fk_galeria_autor_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS cliente (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(120) NOT NULL,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL,
+  telefone VARCHAR(30) NULL,
+  foto VARCHAR(500) NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS livro (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  isbn VARCHAR(20) NULL UNIQUE,
+  titulo VARCHAR(180) NOT NULL,
+  autor VARCHAR(140) NOT NULL,
+  editora VARCHAR(180) NULL,
+  ano_publicacao SMALLINT UNSIGNED NULL,
+  numero_paginas SMALLINT UNSIGNED NULL,
+  descricao TEXT NULL,
+  capa VARCHAR(500) NULL,
+  usuario_id INT UNSIGNED NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_livro_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS estante (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT UNSIGNED NOT NULL,
+  livro_id INT UNSIGNED NOT NULL,
+  status ENUM('quero ler','lendo','lido') NOT NULL DEFAULT 'quero ler',
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_estante_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE,
+  CONSTRAINT fk_estante_livro FOREIGN KEY (livro_id) REFERENCES livro(id) ON DELETE CASCADE,
+  UNIQUE KEY uq_estante_cliente_livro (cliente_id, livro_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS autor_seguidor (
+  cliente_id INT UNSIGNED NOT NULL,
+  autor_id INT UNSIGNED NOT NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (cliente_id, autor_id),
+  INDEX idx_autor_seguidor_autor (autor_id),
+  CONSTRAINT fk_autor_seguidor_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE,
+  CONSTRAINT fk_autor_seguidor_autor FOREIGN KEY (autor_id) REFERENCES usuario(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS avaliacao_livro (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT UNSIGNED NOT NULL,
+  livro_id INT UNSIGNED NOT NULL,
+  nota TINYINT UNSIGNED NOT NULL,
+  comentario TEXT NULL,
+  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  atualizado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_avaliacao_cliente_livro (cliente_id, livro_id),
+  INDEX idx_avaliacao_livro (livro_id),
+  CONSTRAINT fk_avaliacao_cliente FOREIGN KEY (cliente_id) REFERENCES cliente(id) ON DELETE CASCADE,
+  CONSTRAINT fk_avaliacao_livro FOREIGN KEY (livro_id) REFERENCES livro(id) ON DELETE CASCADE,
+  CONSTRAINT chk_avaliacao_nota CHECK (nota BETWEEN 1 AND 5)
+) ENGINE=InnoDB;
+
+-- Cache local das consultas ISBN para evitar repetir chamadas à Open Library.
+CREATE TABLE IF NOT EXISTS isbn_cache (
+  isbn VARCHAR(20) PRIMARY KEY,
+  payload LONGTEXT NOT NULL,
+  cached_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_isbn_cache_cached_at (cached_at)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS isbn_api_state (
+  id TINYINT UNSIGNED PRIMARY KEY,
+  last_request_at DATETIME(6) NULL
+) ENGINE=InnoDB;
+INSERT IGNORE INTO isbn_api_state (id, last_request_at) VALUES (1, NULL);
+
+-- Após importar, acesse setup.php para criar o primeiro administrador.
