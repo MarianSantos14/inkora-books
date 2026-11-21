@@ -1,40 +1,176 @@
-# Inkora Books
+![Páginas do projeto](assets/docs/pagina.png)
 
-Aplicação de catálogo e estante de leitura em PHP puro, MySQL/MariaDB, HTML, Tailwind via CDN e JavaScript leve.
+<div align="center">
 
-## Instalação no XAMPP
+<img src="https://img.shields.io/badge/PHP-8.2-777BB4?style=for-the-badge&logo=php&logoColor=white" />
+<img src="https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
 
-1. Copie a pasta `inkora-books` para `C:\xampp\htdocs\`.
-2. Inicie Apache e MySQL no painel do XAMPP.
-3. Em uma instalação nova, importe `schema.sql` no phpMyAdmin. Em um banco existente, aplique as migrations pendentes em ordem, da v2 até a v4.
-4. Confira usuário e senha do MySQL em `config/database.php` (o padrão é `root` sem senha).
-5. Acesse `http://localhost/inkora-books/setup.php` para criar a primeira conta administradora.
-   Para carregar dados de demonstração, importe `database/demo_data.sql` no phpMyAdmin. A conta administradora demonstrativa usa `admin.demo@example.test`; todas as contas demonstrativas usam a senha `Leitura123!`.
-6. Entre pela tela de login. O administrador pode criar autores e outros administradores na página **Equipe**.
+<h1>Inkora Books</h1>
 
-## Recursos sociais de autores
+</div>
 
-- Perfis de autor exibem livros em cards com capas arredondadas, seguidores e avaliaÃ§Ãµes da comunidade.
-- Clientes podem seguir autores e avaliar livros com nota de 1 a 5 estrelas apÃ³s marcar a leitura como **lido**.
-- Em bancos existentes, aplique `migrations/2026-11-21-author-social.sql` antes de abrir as pÃ¡ginas. Em instalaÃ§Ãµes novas, `schema.sql` jÃ¡ cria as tabelas; `database/demo_data.sql` inclui avaliaÃ§Ãµes e autores seguidos de demonstraÃ§Ã£o.
+**Link:** https://inkorabooks.page.gd/
 
-## Funcionalidades
+### Sobre o projeto
 
-- Catálogo público de livros e lista pública de clientes; cadastro e alterações exigem login.
-- Clientes podem criar conta e atualizar cada livro na estante para **quero ler**, **lendo** ou **lido**.
-- Autores e administradores podem cadastrar, editar e remover livros e clientes.
-- Apenas administradores podem criar e remover usuários da equipe.
-- Administradores têm telas de visualização detalhada e CRUD de clientes e usuários.
-- Painel administrativo com leituras concluídas e livros na lista de desejos.
-- Usuários logados veem, em cada livro, as contagens de pessoas que marcaram lido, lendo ou quero ler.
-- Senhas com `password_hash`, consultas preparadas PDO, validação de e-mail e formulários com token CSRF.
-- Alternância de tema claro/escuro salva no navegador.
-- Fotos de perfil para clientes e equipe; capas de livros podem ser enviadas ou informadas por URL. Ao substituir ou remover uma imagem local, o arquivo anterior é apagado.
-- Cadastro de livros por ISBN: consulta exclusivamente a Open Library. Os resultados encontrados ficam em cache local por 30 dias para reduzir chamadas repetidas; primeiro autor, editora, ano, paginas, sinopse e capa sao preenchidos quando disponiveis.
-- Leitura de ISBN por camera para codigos EAN-13; requer navegador com BarcodeDetector e acesso ao site por localhost ou HTTPS.
-- Cadastro de livros em duas etapas: pesquise por titulo, ISBN ou autor, escolha um resultado e revise os campos no formulario antes de salvar.
-- A busca por ISBN abre um painel de diagnostico com a resposta bruta e o status HTTP da Open Library; tambem permite uma consulta manual sem cache.
-- O seletor de capa usa uma prévia de livro com botão de lápis, substituindo o campo de arquivo visível.
+O **Inkora Books** é uma aplicação web desenvolvida com o objetivo de criar uma comunidade literária, permitindo que leitores descubram livros, organizem suas leituras e compartilhem suas experiências.
 
-As páginas estão separadas em diretórios (`livros/`, `clientes/`, `usuarios/` e `estante/`) e usam um cabeçalho e rodapé compartilhados em `includes/`.
+A plataforma oferece um catálogo de livros, estantes pessoais, perfis de leitores e autores, avaliações e interação entre os usuários.
 
+O projeto foi desenvolvido como **trabalho do 4º bimestre do curso técnico de Informática para Internet da ETEC**, colocando em prática os conhecimentos adquiridos durante o curso, especialmente no desenvolvimento web e na integração com banco de dados.
+
+**Tecnologias principais:** PHP, MySQL, HTML, CSS e JavaScript.
+
+---
+
+### Funcionalidades
+
+#### Catálogo de livros
+- Visualização do catálogo de livros.
+- Pesquisa e consulta de informações literárias.
+- Cadastro, edição e exclusão de livros.
+- Cadastro de livros por título, autor ou ISBN.
+- Integração com a API da Open Library para consulta de informações e capas.
+
+#### Estante pessoal
+- Organização de livros em três categorias:
+  - Quero ler.
+  - Lendo.
+  - Lido.
+- Acompanhamento das leituras.
+- Visualização das atividades de leitura da comunidade.
+
+#### Comunidade
+- Cadastro e autenticação de leitores.
+- Perfis personalizados.
+- Perfis de autores.
+- Possibilidade de seguir autores.
+- Avaliações de livros com notas de 1 a 5 estrelas e comentários.
+- Galeria de imagens nos perfis de autores.
+
+#### Administração
+- Painel administrativo.
+- Gerenciamento de clientes, autores e livros.
+- Cadastro e gerenciamento de usuários da equipe.
+- Visualização de informações e atividades da comunidade.
+- Controle de permissões de acesso.
+
+![Páginas do projeto](assets/docs/pagina2.png)
+
+#### Personalização
+- Alternância entre tema claro e escuro.
+- Upload de fotos de perfil e capas de livros.
+- Interface adaptável a diferentes dispositivos.
+- Carrossel animado de capas de livros.
+
+---
+
+### Banco de dados
+
+O projeto utiliza MySQL para armazenar informações de usuários, clientes, livros, estantes, avaliações e relacionamentos entre leitores e autores.
+
+Principais tabelas:
+
+- `usuario` — usuários da equipe e autores.
+- `cliente` — leitores cadastrados.
+- `livro` — catálogo de livros.
+- `estante` — organização das leituras dos clientes.
+- `autor_seguidor` — relacionamento entre leitores e autores.
+- `avaliacao_livro` — avaliações e comentários.
+- `galeria_autor` — imagens dos perfis de autores.
+- `isbn_cache` — armazenamento temporário de consultas à Open Library.
+
+---
+
+### Como rodar o projeto
+
+#### Pré-requisitos
+
+Antes de começar, você precisa ter:
+
+- PHP 8.0 ou superior.
+- MySQL ou MariaDB.
+- XAMPP ou outro servidor local.
+- Navegador atualizado.
+
+#### 1️⃣ Clone o repositório
+
+```bash
+git clone https://github.com/MarianSantos14/inkora-books.git
+```
+
+#### 2️⃣ Mova o projeto
+
+Coloque a pasta `inkora-books` dentro do diretório:
+
+```text
+C:\xampp\htdocs\
+```
+
+#### 3️⃣ Configure o ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as configurações do banco de dados:
+
+```env
+DB_HOST=localhost
+DB_NAME=inkora_books
+DB_CHARSET=utf8mb4
+DB_USER=root
+DB_PASS=
+```
+
+Altere os valores conforme a configuração do seu MySQL.
+
+#### 4️⃣ Configure o banco de dados
+
+1. Inicie o Apache e o MySQL pelo XAMPP.
+2. Acesse o phpMyAdmin.
+3. Importe o arquivo `schema.sql`.
+4. Para carregar dados de demonstração, importe `database/demo_data.sql`.
+
+#### 5️⃣ Crie o primeiro administrador
+
+Acesse:
+
+```text
+http://localhost/inkora-books/setup.php
+```
+
+Preencha o formulário para criar a primeira conta administradora.
+
+#### 6️⃣ Acesse o projeto
+
+```text
+http://localhost/inkora-books/
+```
+
+---
+
+### Aprendizados
+
+Durante o desenvolvimento do Inkora Books, foram trabalhados conceitos importantes de desenvolvimento web:
+
+- Desenvolvimento backend utilizando PHP.
+- Integração com banco de dados MySQL.
+- Operações CRUD (Create, Read, Update e Delete).
+- Autenticação e gerenciamento de sessões.
+- Controle de permissões de usuários.
+- Consultas preparadas utilizando PDO.
+- Upload e gerenciamento de imagens.
+- Consumo de API externa.
+- Organização e reutilização de componentes.
+- Segurança com validação de dados e proteção CSRF.
+- Desenvolvimento de interfaces e interações com JavaScript.
+
+---
+
+Obs: Dados fictícios e demonstração
+
+Para fins de demonstração e desenvolvimento, a plataforma utiliza dados fictícios.
+
+- **Clientes:** todos os perfis de leitores são fictícios. As fotos utilizadas são de atores de séries que gosto, apenas para representar visualmente os usuários da plataforma.
+- **Autores:** são escritores reais, porém os perfis, informações complementares e interações apresentados no projeto são fictícios e foram criados para fins demonstrativos.
+
+Os dados não representam contas ou interações reais dessas pessoas.
