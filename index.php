@@ -15,7 +15,7 @@ require __DIR__ . '/includes/header.php';
         <h1>Histórias que<br><em>ficam com você.</em></h1>
         <p>Uma estante feita para leitores. Descubra novos mundos, acompanhe sua leitura e guarde cada história especial.</p>
         <div class="hero-actions">
-            <a class="button" href="/inkora-books/livros/">Explorar livros <span>↗</span></a>
+            <a class="button" href="<?= url('livros/') ?>">Explorar livros <span>↗</span></a>
             <a class="text-link" href="<?= logged() ? '/inkora-books/livros/' : '/inkora-books/cadastro.php' ?>">Comece sua estante <span>→</span></a>
         </div>
         <div class="hero-note">
@@ -46,7 +46,7 @@ require __DIR__ . '/includes/header.php';
 <section class="section-head home-books-heading">
     <div>
         <h2>Encontre sua próxima leitura</h2>
-    </div><a class="text-link" href="/inkora-books/livros/">Ver catálogo <span>→</span></a>
+    </div><a class="text-link" href="<?= url('livros/') ?>">Ver catálogo <span>→</span></a>
 </section>
 <div class="home-reading-books"><?php render_books($books); ?></div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

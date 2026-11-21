@@ -55,7 +55,7 @@ require __DIR__ . '/../includes/header.php';
         <h1><?= e($book['titulo']) ?></h1>
         <p><?= e($book['autor']) ?></p>
     </div>
-    <a class="text-link" href="/inkora-books/livros/">← Voltar ao catálogo</a>
+    <a class="text-link" href="<?= url('livros/') ?>">← Voltar ao catálogo</a>
 </section>
 <article class="book-detail">
     <div class="book-detail-cover">

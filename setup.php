@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Configurar Inkora Books</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/inkora-books/assets/style.css">
+    <link rel="stylesheet" href="<?= url('assets/style.css') ?>">
 </head>
 
 <body>

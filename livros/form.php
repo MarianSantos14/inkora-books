@@ -63,7 +63,7 @@ require __DIR__ . '/../includes/header.php'; ?>
     </details>
     <div class="form-actions">
         <button class="button">Salvar livro <span>→</span></button>
-        <a class="text-link" href="/inkora-books/livros/">Cancelar</a>
+        <a class="text-link" href="<?= url('livros/') ?>">Cancelar</a>
     </div>
 </form>
 <?php require __DIR__ . '/../includes/footer.php'; ?>

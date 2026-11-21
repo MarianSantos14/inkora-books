@@ -16,7 +16,7 @@ require __DIR__ . '/../includes/header.php';
 <?php else: ?>
     <section class="page-heading"><div><div class="eyebrow">SEU CANTINHO</div><h1>Minha estante</h1><p>Cada livro, uma nova parte da sua hist&oacute;ria.</p></div><?php if ($shelf): ?><button type="button" class="button button-small" id="shelfEditToggle" aria-controls="shelfBookGrid" aria-pressed="false">Editar estante</button><?php endif; ?></section>
     <?php if (!$shelf): ?>
-        <div class="empty-state"><h2>Sua pr&oacute;xima hist&oacute;ria come&ccedil;a aqui.</h2><p>Explore o cat&aacute;logo e salve livros que quer ler.</p><a class="button" href="/inkora-books/livros/">Explorar livros</a></div>
+        <div class="empty-state"><h2>Sua pr&oacute;xima hist&oacute;ria come&ccedil;a aqui.</h2><p>Explore o cat&aacute;logo e salve livros que quer ler.</p><a class="button" href="<?= url('livros/') ?>">Explorar livros</a></div>
     <?php else: ?>
         <div class="book-grid shelf-grid" id="shelfBookGrid">
         <?php foreach ($shelf as $book): ?>

@@ -13,9 +13,11 @@ unset($_SESSION['flash']);
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/inkora-books/assets/style.css">
+    <link rel="stylesheet" href="<?= url('assets/style.css') ?>">
     <?php if (!empty($useLightbox)): ?>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.12.0/css/lightbox.min.css"><?php endif; ?>
+    <link rel="icon" href="<?= url('assets/icons/favicon.ico') ?>" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="<?= url('assets/icons/favicon.svg') ?>">
 </head>
 
 <body>
@@ -26,7 +28,7 @@ unset($_SESSION['flash']);
             <div class="topbar-menu" id="site-menu" data-site-menu>
                 <nav aria-label="Navegação principal">
                     <a href="/inkora-books/">Início</a>
-                    <a href="/inkora-books/livros/">Livros</a>
+                    <a href="<?= url('livros/') ?>">Livros</a>
                     <a href="/inkora-books/autores/">Autores</a>
                     <a href="/inkora-books/clientes/">Comunidade</a>
                     <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?><a href="/inkora-books/estante/">Minha estante</a><?php endif; ?>

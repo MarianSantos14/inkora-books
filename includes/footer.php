@@ -23,7 +23,7 @@
             albumLabel: "Imagem %1 de %2"
         });
     </script><?php endif; ?>
-<script src="/inkora-books/assets/app.js"></script>
+<script src="<?= url('assets/app.js') ?>"></script>
 </body>
 
 </html>
