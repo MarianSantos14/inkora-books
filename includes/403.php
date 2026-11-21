@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/functions.php';
 http_response_code(403);
 $pageTitle = 'Acesso não autorizado';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/header.php';
 ?>
 <section class="error-page">
     <div class="error-page-code">403</div>
@@ -11,4 +11,4 @@ require __DIR__ . '/includes/header.php';
     <p>Esta página está disponível apenas para contas autorizadas.</p>
     <a class="button" href="<?= url('') ?>">Voltar ao início <span>→</span></a>
 </section>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/footer.php'; ?>

@@ -1,2 +1,8 @@
-ErrorDocument 404 /inkora-books/404.php
-ErrorDocument 403 /inkora-books/403.php
+<If "%{HTTP_HOST} =~ /^(localhost|127[.]0[.]0[.]1)(:[0-9]+)?$/">
+    ErrorDocument 404 /inkora-books/includes/404.php
+    ErrorDocument 403 /inkora-books/includes/403.php
+</If>
+<Else>
+    ErrorDocument 404 /includes/404.php
+    ErrorDocument 403 /includes/403.php
+</Else>

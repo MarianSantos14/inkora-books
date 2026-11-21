@@ -64,7 +64,7 @@ function show_error_page(int $status): never
 {
     $status = in_array($status, [403, 404], true) ? $status : 404;
     http_response_code($status);
-    require dirname(__DIR__) . '/' . $status . '.php';
+    require __DIR__ . '/' . $status . '.php';
     exit;
 }
 function require_admin(): void
