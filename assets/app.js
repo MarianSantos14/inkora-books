@@ -34,7 +34,7 @@ async function lookupIsbn(debugOnly = false) {
   if (!input) return;
   if (!debugOnly && result) result.textContent = 'Consultando Open Libraryâ€¦';
   if (isbnButton) isbnButton.disabled = true;
-  const endpoint = `${document.body.dataset.baseUrl}/api/isbn.php?isbn=${encodeURIComponent(input.value)}${debugOnly ? '&debug=1' : ''}`;
+  const endpoint = `${document.body.dataset.baseUrl}/isbn.php?isbn=${encodeURIComponent(input.value)}${debugOnly ? '&debug=1' : ''}`;
   try {
     const response = await fetch(endpoint);
     const data = await response.json();
