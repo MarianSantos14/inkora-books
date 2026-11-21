@@ -72,7 +72,7 @@ require __DIR__ . '/../includes/header.php';
     <div class="book-detail-content">
         <div class="eyebrow">FICHA DO LIVRO</div>
         <h2><?= e($book['titulo']) ?></h2>
-        <p class="book-detail-author">Por <?php if ($authorAccount): ?><a class="text-link" href="/inkora-books/usuarios/ver.php?id=<?= $authorAccount['id'] ?>"><?= e($authorAccount['nome']) ?></a><?php else: ?><?= e($book['autor']) ?><?php endif; ?></p>
+        <p class="book-detail-author">Por <?php if ($authorAccount): ?><a class="text-link" href="<?= url('usuarios/ver.php') ?>?id=<?= $authorAccount['id'] ?>"><?= e($authorAccount['nome']) ?></a><?php else: ?><?= e($book['autor']) ?><?php endif; ?></p>
         <div class="book-detail-metadata">
             <?php if (!empty($book['isbn'])): ?><div><span>ISBN</span><strong><?= e($book['isbn']) ?></strong></div><?php endif; ?>
             <?php if (!empty($book['editora'])): ?><div><span>Editora</span><strong><?= e($book['editora']) ?></strong></div><?php endif; ?>
@@ -91,10 +91,10 @@ require __DIR__ . '/../includes/header.php';
         </section>
         <div class="book-detail-actions">
             <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?>
-                <form method="post" action="/inkora-books/actions.php"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $bookId ?>"><input type="hidden" name="status" value="quero ler"><button class="book-detail-secondary">Adicionar à estante</button></form>
-            <?php elseif (!logged()): ?><a class="button" href="/inkora-books/login.php">Entre para guardar na estante</a><?php endif; ?>
-            <?php if (can_manage_book($ownerId)): ?><a class="book-detail-secondary" href="/inkora-books/livros/form.php?id=<?= $bookId ?>">Editar livro</a>
-                <form method="post" action="/inkora-books/actions.php" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= $bookId ?>"><button class="book-detail-delete">Excluir livro</button></form><?php endif; ?>
+                <form method="post" action="<?= url('actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $bookId ?>"><input type="hidden" name="status" value="quero ler"><button class="book-detail-secondary">Adicionar à estante</button></form>
+            <?php elseif (!logged()): ?><a class="button" href="<?= url('login.php') ?>">Entre para guardar na estante</a><?php endif; ?>
+            <?php if (can_manage_book($ownerId)): ?><a class="book-detail-secondary" href="<?= url('livros/form.php') ?>?id=<?= $bookId ?>">Editar livro</a>
+                <form method="post" action="<?= url('actions.php') ?>" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= $bookId ?>"><button class="book-detail-delete">Excluir livro</button></form><?php endif; ?>
         </div>
     </div>
 </article>
@@ -109,7 +109,7 @@ require __DIR__ . '/../includes/header.php';
         </div>
     </div>
     <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente' && $readerStatus === 'lido'): ?>
-        <form class="editor book-review-form" method="post" action="/inkora-books/actions.php"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="rate_book"><input type="hidden" name="livro_id" value="<?= $bookId ?>">
+        <form class="editor book-review-form" method="post" action="<?= url('actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="rate_book"><input type="hidden" name="livro_id" value="<?= $bookId ?>">
             <h3><?= $myRating ? 'Atualize sua avaliação' : 'Como foi a leitura?' ?></h3>
             <div class="review-rating-field"><label for="review-rating">Sua nota</label><select required id="review-rating" name="nota">
                     <option value="">Escolha de 1 a 5 estrelas</option><?php for ($star = 5; $star >= 1; $star--): ?><option value="<?= $star ?>" <?= ((int)($myRating['nota'] ?? 0) === $star ? 'selected' : '') ?>><?= $star ?> <?= ($star === 1 ? 'estrela' : 'estrelas') ?></option><?php endfor; ?>
@@ -120,9 +120,9 @@ require __DIR__ . '/../includes/header.php';
     <?php elseif (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?>
         <div class="review-read-gate">
             <p>Marque este livro como lido para compartilhar sua avaliação.</p>
-            <form method="post" action="/inkora-books/actions.php"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $bookId ?>"><input type="hidden" name="status" value="lido"><button class="button button-small">Marcar como lido</button></form>
+            <form method="post" action="<?= url('actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $bookId ?>"><input type="hidden" name="status" value="lido"><button class="button button-small">Marcar como lido</button></form>
         </div>
-    <?php elseif (!logged()): ?><p class="review-read-gate"><a class="text-link" href="/inkora-books/login.php">Entre como leitor</a> e marque este livro como lido para avaliá-lo.</p><?php endif; ?>
+    <?php elseif (!logged()): ?><p class="review-read-gate"><a class="text-link" href="<?= url('login.php') ?>">Entre como leitor</a> e marque este livro como lido para avaliá-lo.</p><?php endif; ?>
     <?php if ($reviews): ?>
         <div class="book-review-list"><?php foreach ($reviews as $review): ?>
                 <article class="book-review-card">

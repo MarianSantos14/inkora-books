@@ -10,7 +10,7 @@ $topPublishers = $pdo->query("SELECT COALESCE(NULLIF(TRIM(l.editora),''),'Editor
 $allBooks = $pdo->query('SELECT id,titulo,autor,editora,ano_publicacao,capa FROM livro ORDER BY titulo ASC')->fetchAll();
 $chartColors = ['#3568a8', '#4f87c3', '#6e9b83', '#c57670', '#8b7db0'];
 $chartPayload = [
-    'books' => array_map(static fn($row) => ['title' => $row['titulo'], 'author' => $row['autor'], 'reads' => (int)$row['leituras'], 'cover' => !empty($row['capa']) ? image_url($row['capa'], '') : null, 'url' => '/inkora-books/livros/ver.php?id=' . (int)$row['id']], $topBooks),
+    'books' => array_map(static fn($row) => ['title' => $row['titulo'], 'author' => $row['autor'], 'reads' => (int)$row['leituras'], 'cover' => !empty($row['capa']) ? image_url($row['capa'], '') : null, 'url' => url('livros/ver.php?id=') . (int)$row['id']], $topBooks),
     'authors' => array_map(static fn($row) => ['name' => $row['autor'], 'reads' => (int)$row['leituras']], $topAuthors),
     'publishers' => array_map(static fn($row) => ['name' => $row['editora'], 'reads' => (int)$row['leituras']], $topPublishers),
     'colors' => $chartColors,
@@ -42,7 +42,7 @@ require __DIR__ . '/includes/header.php';
     <?php if (!$topBooks): ?><div class="dashboard-chart-empty">Ainda não há leituras concluídas.</div><?php else: ?>
         <div class="dashboard-books-scroll" role="region" tabindex="0" aria-label="Gráfico e capas dos livros mais lidos">
             <div class="chart-canvas-wrap books-chart-wrap"><canvas id="booksChart" aria-label="Gráfico de barras dos dez livros mais lidos"></canvas></div>
-            <div class="book-cover-list" style="--book-count:<?= count($topBooks) ?>"><?php foreach ($topBooks as $index => $book): ?><a class="book-cover-card" href="/inkora-books/livros/ver.php?id=<?= (int)$book['id'] ?>" title="<?= e($book['titulo'] . ' — ' . $book['autor']) ?>"><span class="book-cover-rank"><?= $index + 1 ?></span><span class="book-cover-image-wrap"><?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="book-cover-placeholder">✦</span><?php endif; ?></span><strong><?= e($book['titulo']) ?></strong><small><?= e($book['autor']) ?></small></a><?php endforeach; ?></div>
+            <div class="book-cover-list" style="--book-count:<?= count($topBooks) ?>"><?php foreach ($topBooks as $index => $book): ?><a class="book-cover-card" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" title="<?= e($book['titulo'] . ' — ' . $book['autor']) ?>"><span class="book-cover-rank"><?= $index + 1 ?></span><span class="book-cover-image-wrap"><?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="book-cover-placeholder">✦</span><?php endif; ?></span><strong><?= e($book['titulo']) ?></strong><small><?= e($book['autor']) ?></small></a><?php endforeach; ?></div>
         </div>
     <?php endif; ?>
 </section>
@@ -94,15 +94,15 @@ require __DIR__ . '/includes/header.php';
                 </tr>
             </thead>
             <tbody><?php foreach ($allBooks as $book): ?><tr>
-                        <td class="book-cover-cell"><a href="/inkora-books/livros/ver.php?id=<?= (int)$book['id'] ?>"><?php $thumbnailBook = $book;
+                        <td class="book-cover-cell"><a href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>"><?php $thumbnailBook = $book;
                                                                                                                         require __DIR__ . '/includes/book_thumbnail.php'; ?></a></td>
-                        <td><a class="text-link" href="/inkora-books/livros/ver.php?id=<?= (int)$book['id'] ?>"><?= e($book['titulo']) ?></a></td>
+                        <td><a class="text-link" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>"><?= e($book['titulo']) ?></a></td>
                         <td><?= e($book['autor']) ?></td>
                         <td><?= e($book['editora'] ?: '—') ?></td>
                         <td class="dashboard-book-year"><?= e((string)($book['ano_publicacao'] ?: '—')) ?></td>
                         <td>
-                            <div class="manage-links dashboard-book-actions"><a href="/inkora-books/livros/ver.php?id=<?= (int)$book['id'] ?>">Ver</a><a href="/inkora-books/livros/form.php?id=<?= (int)$book['id'] ?>">Editar</a>
-                                <form method="post" action="/inkora-books/actions.php" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= (int)$book['id'] ?>"><button type="submit">Excluir</button></form>
+                            <div class="manage-links dashboard-book-actions"><a href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>">Ver</a><a href="<?= url('livros/form.php') ?>?id=<?= (int)$book['id'] ?>">Editar</a>
+                                <form method="post" action="<?= url('actions.php') ?>" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= (int)$book['id'] ?>"><button type="submit">Excluir</button></form>
                             </div>
                         </td>
                     </tr><?php endforeach; ?></tbody>

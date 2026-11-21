@@ -20,28 +20,28 @@ unset($_SESSION['flash']);
     <link rel="icon" type="image/svg+xml" href="<?= url('assets/icons/favicon.svg') ?>">
 </head>
 
-<body>
+<body data-base-url="<?= e(BASE_URL) ?>">
     <header class="topbar">
         <div class="topbar-inner">
-            <a class="brand" href="/inkora-books/" aria-label="Inkora Books, início"><span>Inkora <span class="brand-dot">Books</span></span></a>
+            <a class="brand" href="<?= url('') ?>" aria-label="Inkora Books, início"><span>Inkora <span class="brand-dot">Books</span></span></a>
             <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle><span></span><span></span><span></span></button>
             <div class="topbar-menu" id="site-menu" data-site-menu>
                 <nav aria-label="Navegação principal">
-                    <a href="/inkora-books/">Início</a>
+                    <a href="<?= url('') ?>">Início</a>
                     <a href="<?= url('livros/') ?>">Livros</a>
-                    <a href="/inkora-books/autores/">Autores</a>
-                    <a href="/inkora-books/clientes/">Comunidade</a>
-                    <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?><a href="/inkora-books/estante/">Minha estante</a><?php endif; ?>
-                    <?php if (admin()): ?><a href="/inkora-books/usuarios/">Usuários</a><a href="/inkora-books/dashboard.php">Painel</a><?php endif; ?>
+                    <a href="<?= url('autores/') ?>">Autores</a>
+                    <a href="<?= url('clientes/') ?>">Comunidade</a>
+                    <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?><a href="<?= url('estante/') ?>">Minha estante</a><?php endif; ?>
+                    <?php if (admin()): ?><a href="<?= url('usuarios/') ?>">Usuários</a><a href="<?= url('dashboard.php') ?>">Painel</a><?php endif; ?>
                 </nav>
                 <div class="nav-right">
                     <button class="icon-button" data-theme-toggle aria-label="Alternar tema">◐</button>
                     <?php if (logged()): ?>
-                        <a class="hello" href="/inkora-books/perfil.php"><?php if (!empty($_SESSION['auth']['foto'])): ?><img class="nav-avatar" src="<?= e(image_url($_SESSION['auth']['foto'], '')) ?>" alt=""><?php endif; ?><?= e($_SESSION['auth']['nome']) ?></a>
-                        <form method="post" action="/inkora-books/actions.php"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="logout"><button class="nav-login">Sair</button></form>
+                        <a class="hello" href="<?= url('perfil.php') ?>"><?php if (!empty($_SESSION['auth']['foto'])): ?><img class="nav-avatar" src="<?= e(image_url($_SESSION['auth']['foto'], '')) ?>" alt=""><?php endif; ?><?= e($_SESSION['auth']['nome']) ?></a>
+                        <form method="post" action="<?= url('actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="logout"><button class="nav-login">Sair</button></form>
                     <?php else: ?>
-                        <a class="nav-login" href="/inkora-books/login.php">Entrar</a>
-                        <a class="button button-small" href="/inkora-books/cadastro.php">Criar conta</a>
+                        <a class="nav-login" href="<?= url('login.php') ?>">Entrar</a>
+                        <a class="button button-small" href="<?= url('cadastro.php') ?>">Criar conta</a>
                     <?php endif; ?>
                 </div>
             </div>

@@ -10,7 +10,7 @@ require __DIR__ . '/includes/header.php'; ?><section class="auth-card">
     <div class="eyebrow">SUA CONTA</div>
     <h1>Meu perfil</h1>
     <p>Atualize seus dados, senha e foto.</p>
-    <form method="post" enctype="multipart/form-data" class="form-grid" action="/inkora-books/actions.php">
+    <form method="post" enctype="multipart/form-data" class="form-grid" action="<?= url('actions.php') ?>">
         <input type="hidden" name="csrf" value="<?= e(csrf()) ?>">
         <input type="hidden" name="action" value="save_profile">
         <?php $photoValue = $profile['foto'] ?? null;
@@ -25,6 +25,6 @@ require __DIR__ . '/includes/header.php'; ?><section class="auth-card">
         <button class="button form-submit">Salvar alterações <span>→</span></button>
     </form>
     <?php if (($_SESSION['auth']['kind'] ?? '') === 'usuario' && ($_SESSION['auth']['role'] ?? '') === 'autor'): ?>
-        <a class="button button-small author-own-page" href="/inkora-books/usuarios/ver.php?id=<?= id() ?>">Ver minha p&#225;gina de autora</a>
+        <a class="button button-small author-own-page" href="<?= url('usuarios/ver.php') ?>?id=<?= id() ?>">Ver minha p&#225;gina de autora</a>
     <?php endif; ?>
 </section><?php require __DIR__ . '/includes/footer.php'; ?>

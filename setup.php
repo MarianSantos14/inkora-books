@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         else {
             db()->prepare("INSERT INTO usuario (nome,email,senha,tipo) VALUES (?,?,?,'admin')")->execute([$name, $email, password_hash($password, PASSWORD_DEFAULT)]);
             flash('Administrador criado. Entre com seu e-mail e senha.');
-            go('/inkora-books/login.php');
+            go(url('login.php'));
         }
     }
 }
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <section class="auth-card">
             <div class="eyebrow">CONFIGURAÇÃO INICIAL</div>
             <h1>Crie o administrador</h1>
-            <p>Importe o schema.sql no phpMyAdmin antes de continuar. Esta tela só funciona enquanto ainda não houver usuários da equipe.</p><?php if ($message): ?><div class="notice error"><?= e($message) ?></div><?php endif; ?><?php if ($count === 0): ?><form method="post" class="form-grid"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><label>Nome<input required name="nome"></label><label>E-mail<input required type="email" name="email"></label><label>Senha (mínimo 8 caracteres)<input required minlength="8" type="password" name="senha"></label><button class="button form-submit">Criar administrador <span>→</span></button></form><?php else: ?><a class="button" href="/inkora-books/login.php">Ir para o login</a><?php endif; ?>
+            <p>Importe o schema.sql no phpMyAdmin antes de continuar. Esta tela só funciona enquanto ainda não houver usuários da equipe.</p><?php if ($message): ?><div class="notice error"><?= e($message) ?></div><?php endif; ?><?php if ($count === 0): ?><form method="post" class="form-grid"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><label>Nome<input required name="nome"></label><label>E-mail<input required type="email" name="email"></label><label>Senha (mínimo 8 caracteres)<input required minlength="8" type="password" name="senha"></label><button class="button form-submit">Criar administrador <span>→</span></button></form><?php else: ?><a class="button" href="<?= url('login.php') ?>">Ir para o login</a><?php endif; ?>
         </section>
     </main>
 </body>

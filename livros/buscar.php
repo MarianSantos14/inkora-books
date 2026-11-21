@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim((string)($_POST['titulo'] ?? ''));
     if ($title === '') {
         flash('Esse resultado não tem título para cadastrar.', 'error');
-        go('/inkora-books/livros/buscar.php');
+        go(url('livros/buscar.php'));
     }
     $_SESSION['book_import_draft'] = [
         'isbn' => strtoupper(preg_replace('/[^0-9Xx]/', '', (string)($_POST['isbn'] ?? ''))),
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'descricao' => trim((string)($_POST['descricao'] ?? '')),
         'capa' => filter_var((string)($_POST['capa'] ?? ''), FILTER_VALIDATE_URL) ? (string)$_POST['capa'] : '',
     ];
-    go('/inkora-books/livros/form.php');
+    go(url('livros/form.php'));
 }
 
 $type = (string)($_GET['tipo'] ?? 'titulo');
@@ -183,10 +183,10 @@ require __DIR__ . '/../includes/header.php';
         <h1>Encontre um livro</h1>
         <p>Pesquise pelo título, autor ou ISBN. Escolha uma edição para revisar e completar os dados.</p>
     </div>
-    <a class="text-link" href="/inkora-books/livros/form.php">Preencher manualmente →</a>
+    <a class="text-link" href="<?= url('livros/form.php') ?>">Preencher manualmente →</a>
 </section>
 
-<form class="editor catalog-search-form" method="get" action="/inkora-books/livros/buscar.php">
+<form class="editor catalog-search-form" method="get" action="<?= url('livros/buscar.php') ?>">
     <label for="catalog-query">Pesquisar na Open Library</label>
     <div class="catalog-search-controls">
         <select name="tipo" aria-label="Campo da pesquisa">
@@ -221,7 +221,7 @@ require __DIR__ . '/../includes/header.php';
                         <?php if ($result['isbn']): ?><span>ISBN <?= e($result['isbn']) ?></span><?php endif; ?>
                     </div>
                     <?php if ($result['descricao']): ?><p class="catalog-result-description"><?= e($result['descricao']) ?></p><?php endif; ?>
-                    <form method="post" action="/inkora-books/livros/buscar.php">
+                    <form method="post" action="<?= url('livros/buscar.php') ?>">
                         <input type="hidden" name="csrf" value="<?= e(csrf()) ?>">
                         <?php foreach ($result as $key => $value): ?><input type="hidden" name="<?= e($key) ?>" value="<?= e($value) ?>"><?php endforeach; ?>
                         <button class="button button-small" type="submit">Escolher e revisar dados <span>→</span></button>

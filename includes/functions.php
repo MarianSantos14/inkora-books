@@ -44,9 +44,9 @@ function flash(string $message, string $kind = 'success'): void
 {
     $_SESSION['flash'] = [$message, $kind];
 }
-function go(string $url = '/inkora-books/'): never
+function go(string $url = ''): never
 {
-    header('Location: ' . $url);
+    header('Location: ' . ($url === '' ? url() : $url));
     exit;
 }
 function post(string $key, string $default = ''): string
@@ -57,7 +57,7 @@ function require_login(): void
 {
     if (!logged()) {
         flash('Entre na sua conta para continuar.', 'error');
-        go('/inkora-books/login.php');
+        go(url('login.php'));
     }
 }
 function show_error_page(int $status): never
@@ -106,5 +106,5 @@ function delete_image(?string $path, string $folder): void
 function image_url(?string $path, string $fallback): string
 {
     if (!$path) return $fallback;
-    return preg_match('~^https?://~i', $path) ? $path : '/inkora-books/' . trim($path, '/');
+    return preg_match('~^https?://~i', $path) ? $path : url(trim($path, '/'));
 }

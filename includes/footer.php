@@ -1,6 +1,6 @@
 </main>
 <footer class="footer">
-    <a class="brand" href="/inkora-books/"><span>Inkora <span class="brand-dot">Books</span></span></a>
+    <a class="brand" href="<?= url('') ?>"><span>Inkora <span class="brand-dot">Books</span></span></a>
     <span class="footer-tagline">Feito para quem encontra um lar em cada história.</span>
     <section class="footer-credits" aria-label="Créditos">
         <span class="footer-credits-title">Criado por</span>

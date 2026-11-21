@@ -8,7 +8,7 @@ require __DIR__ . '/../includes/header.php'; ?>
         <div class="eyebrow">BIBLIOTECA</div>
         <h1>Nosso catálogo</h1>
         <p>Histórias selecionadas para acompanhar você.</p>
-    </div><?php if (staff()): ?><a class="button" href="/inkora-books/livros/form.php">Adicionar livro <span>+</span></a><?php endif; ?>
+    </div><?php if (staff()): ?><a class="button" href="<?= url('livros/form.php') ?>">Adicionar livro <span>+</span></a><?php endif; ?>
 </section>
 <?php render_books($books, true, false);
 require __DIR__ . '/../includes/footer.php'; ?>

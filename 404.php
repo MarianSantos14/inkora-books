@@ -9,6 +9,6 @@ require __DIR__ . '/includes/header.php';
     <div class="eyebrow">PÁGINA NÃO ENCONTRADA</div>
     <h1>Esta história saiu da estante.</h1>
     <p>O endereço pode estar incorreto ou a página não existe mais.</p>
-    <a class="button" href="/inkora-books/">Voltar ao início <span>→</span></a>
+    <a class="button" href="<?= url('') ?>">Voltar ao início <span>→</span></a>
 </section>
 <?php require __DIR__ . '/includes/footer.php'; ?>

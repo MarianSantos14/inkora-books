@@ -9,6 +9,6 @@ require __DIR__ . '/includes/header.php';
     <div class="eyebrow">ACESSO RESTRITO</div>
     <h1>Você não tem permissão para entrar aqui.</h1>
     <p>Esta página está disponível apenas para contas autorizadas.</p>
-    <a class="button" href="/inkora-books/">Voltar ao início <span>→</span></a>
+    <a class="button" href="<?= url('') ?>">Voltar ao início <span>→</span></a>
 </section>
 <?php require __DIR__ . '/includes/footer.php'; ?>
