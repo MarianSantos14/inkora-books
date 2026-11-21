@@ -57,7 +57,7 @@ function require_login(): void
 {
     if (!logged()) {
         flash('Entre na sua conta para continuar.', 'error');
-        go(url('login.php'));
+        go(url('pages/login.php'));
     }
 }
 function show_error_page(int $status): never

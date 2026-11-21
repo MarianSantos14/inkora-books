@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 
 $pdo = db();
@@ -16,7 +16,7 @@ $chartPayload = [
     'colors' => $chartColors,
 ];
 $pageTitle = 'Painel de leitura';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../includes/header.php';
 ?>
 <section class="page-heading">
     <div>
@@ -95,14 +95,14 @@ require __DIR__ . '/includes/header.php';
             </thead>
             <tbody><?php foreach ($allBooks as $book): ?><tr>
                         <td class="book-cover-cell"><a href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>"><?php $thumbnailBook = $book;
-                                                                                                                        require __DIR__ . '/includes/book_thumbnail.php'; ?></a></td>
+                                                                                                                        require __DIR__ . '/../includes/book_thumbnail.php'; ?></a></td>
                         <td><a class="text-link" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>"><?= e($book['titulo']) ?></a></td>
                         <td><?= e($book['autor']) ?></td>
                         <td><?= e($book['editora'] ?: '—') ?></td>
                         <td class="dashboard-book-year"><?= e((string)($book['ano_publicacao'] ?: '—')) ?></td>
                         <td>
                             <div class="manage-links dashboard-book-actions"><a href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>">Ver</a><a href="<?= url('livros/form.php') ?>?id=<?= (int)$book['id'] ?>">Editar</a>
-                                <form method="post" action="<?= url('actions.php') ?>" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= (int)$book['id'] ?>"><button type="submit">Excluir</button></form>
+                                <form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= (int)$book['id'] ?>"><button type="submit">Excluir</button></form>
                             </div>
                         </td>
                     </tr><?php endforeach; ?></tbody>
@@ -328,4 +328,4 @@ require __DIR__ . '/includes/header.php';
         })();
     </script>
 <?php endif; ?>
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

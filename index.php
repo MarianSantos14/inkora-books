@@ -16,7 +16,7 @@ require __DIR__ . '/includes/header.php';
         <p>Uma estante feita para leitores. Descubra novos mundos, acompanhe sua leitura e guarde cada história especial.</p>
         <div class="hero-actions">
             <a class="button" href="<?= url('livros/') ?>">Explorar livros <span>↗</span></a>
-            <a class="text-link" href="<?= logged() ? url('livros/') : url('cadastro.php') ?>">Comece sua estante <span>→</span></a>
+            <a class="text-link" href="<?= logged() ? url('livros/') : url('pages/cadastro.php') ?>">Comece sua estante <span>→</span></a>
         </div>
         <div class="hero-note">
             <div class="avatars" aria-label="Leitores da comunidade">

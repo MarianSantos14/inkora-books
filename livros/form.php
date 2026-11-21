@@ -39,7 +39,7 @@ require __DIR__ . '/../includes/header.php'; ?>
         <p><?= $hasImportDraft ? 'Confira e ajuste as informações antes de adicionar o livro ao catálogo.' : 'Preencha os dados do livro para adicioná-lo ao catálogo.' ?></p>
     </div>
 </section>
-<form id="book-form" class="editor" method="post" enctype="multipart/form-data" action="<?= url('actions.php') ?>">
+<form id="book-form" class="editor" method="post" enctype="multipart/form-data" action="<?= url('pages/actions.php') ?>">
     <input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="save_book"><input type="hidden" name="id" value="<?= $book["id"] ?? "" ?>">
     <div class="form-grid two">
         <?php $coverValue = $book['capa'] ?? null;

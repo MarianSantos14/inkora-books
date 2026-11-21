@@ -56,16 +56,16 @@ function render_books(array $items, bool $manage = false, bool $showSynopsis = t
                 <div class="book-card-bottom">
                     <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?>
                         <div class="card-actions">
-                            <form method="post" action="<?= url('actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $book['id'] ?>"><input type="hidden" name="status" value="quero ler"><button class="save-link">＋ Estante</button></form>
+                            <form method="post" action="<?= url('pages/actions.php') ?>"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="shelf"><input type="hidden" name="livro_id" value="<?= $book['id'] ?>"><input type="hidden" name="status" value="quero ler"><button class="save-link">＋ Estante</button></form>
                         </div>
                     <?php elseif (logged()): ?>
                         <div class="card-actions"><span class="staff-tag">Equipe</span></div>
                     <?php else: ?>
-                        <div class="card-actions"><a class="save-link" href="<?= url('login.php') ?>">Entre para guardar ↗</a></div>
+                        <div class="card-actions"><a class="save-link" href="<?= url('pages/login.php') ?>">Entre para guardar ↗</a></div>
                     <?php endif; ?>
                     <?php if ($manage && can_manage_book($ownerId)): ?>
                         <div class="manage-links"><a href="<?= url('livros/form.php') ?>?id=<?= $book['id'] ?>">Editar</a>
-                            <form method="post" action="<?= url('actions.php') ?>" data-confirm="Remover este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= $book['id'] ?>"><button>Excluir</button></form>
+                            <form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Remover este livro e sua capa local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?= $book['id'] ?>"><button>Excluir</button></form>
                         </div>
                     <?php endif; ?>
                 </div>

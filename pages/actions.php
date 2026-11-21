@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/../includes/functions.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') go(url(''));
 csrf_check(); $pdo=db(); $newImage=null;
 try {
@@ -107,7 +107,7 @@ try {
         if($kind==='cliente'){$phone=post('telefone');if($password!==''){if(strlen($password)<8)throw new RuntimeException('A nova senha deve ter ao menos 8 caracteres.');$pdo->prepare('UPDATE cliente SET nome=?,email=?,foto=?,telefone=?,senha=? WHERE id=?')->execute([$name,$email,$photo,$phone,password_hash($password,PASSWORD_DEFAULT),id()]);}else $pdo->prepare('UPDATE cliente SET nome=?,email=?,foto=?,telefone=? WHERE id=?')->execute([$name,$email,$photo,$phone,id()]);}
         elseif($password!==''){if(strlen($password)<8)throw new RuntimeException('A nova senha deve ter ao menos 8 caracteres.');$pdo->prepare('UPDATE usuario SET nome=?,email=?,foto=?,senha=? WHERE id=?')->execute([$name,$email,$photo,password_hash($password,PASSWORD_DEFAULT),id()]);}
         else $pdo->prepare('UPDATE usuario SET nome=?,email=?,foto=? WHERE id=?')->execute([$name,$email,$photo,id()]);
-        if(($newImage||$remove)&&$old)delete_image($old,$folder);$_SESSION['auth']['nome']=$name;$_SESSION['auth']['email']=$email;$_SESSION['auth']['foto']=$photo;flash('Perfil atualizado.');go(url('perfil.php'));
+        if(($newImage||$remove)&&$old)delete_image($old,$folder);$_SESSION['auth']['nome']=$name;$_SESSION['auth']['email']=$email;$_SESSION['auth']['foto']=$photo;flash('Perfil atualizado.');go(url('pages/perfil.php'));
     }
     if($action==='shelf'){require_login();if(($_SESSION['auth']['kind']??'')!=='cliente')throw new RuntimeException('Entre com uma conta de cliente para usar a estante.');$book=(int)post('livro_id');$status=post('status','quero ler');if(!in_array($status,['quero ler','lendo','lido'],true))throw new RuntimeException('Status inválido.');$pdo->prepare('INSERT INTO estante(cliente_id,livro_id,status) VALUES(?,?,?) ON DUPLICATE KEY UPDATE status=VALUES(status)')->execute([id(),$book,$status]);flash('Estante atualizada.');go(url('estante/'));}
     throw new RuntimeException('Ação não reconhecida.');
