@@ -200,7 +200,7 @@ if (navToggle && siteMenu) {
   navToggle.addEventListener('click', () => setMenuOpen(navToggle.getAttribute('aria-expanded') !== 'true'));
   siteMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenuOpen(false)));
   document.addEventListener('keydown', event => { if (event.key === 'Escape') setMenuOpen(false); });
-  window.addEventListener('resize', () => { if (window.innerWidth > 900) setMenuOpen(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 1000) setMenuOpen(false); });
 }
 
 const homeCarouselViewport = document.querySelector('.home-book-carousel-viewport');

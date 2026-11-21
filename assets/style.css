@@ -5398,3 +5398,13 @@ tbody tr:hover {
     z-index: 3;
     transform: translateY(-5px) rotate(0) scale(1.12)
 }
+
+@media(max-width:1000px) {
+    .topbar {
+        height: auto
+    }
+
+    .topbar nav {
+        order: 0
+    }
+}
