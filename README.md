@@ -71,8 +71,9 @@ O projeto foi desenvolvido como **trabalho do 4º bimestre do curso técnico de 
 
 O projeto utiliza MySQL para armazenar informações de usuários, clientes, livros, estantes, avaliações e relacionamentos entre leitores e autores.
 
-Principais tabelas:
+O arquivo **[`schema.sql`](schema.sql)** contém a estrutura inicial do banco de dados. Ao importá-lo, o banco `inkora_books` é criado automaticamente, junto com suas tabelas.
 
+Principais tabelas:
 - `usuario` — usuários da equipe e autores.
 - `cliente` — leitores cadastrados.
 - `livro` — catálogo de livros.
@@ -88,20 +89,18 @@ Principais tabelas:
 
 #### Pré-requisitos
 
-Antes de começar, você precisa ter:
-
-- PHP 8.0 ou superior.
+- PHP 8.2 ou superior.
 - MySQL ou MariaDB.
 - XAMPP ou outro servidor local.
 - Navegador atualizado.
 
-#### 1️⃣ Clone o repositório
+#### 1. Clone o repositório
 
 ```bash
 git clone https://github.com/MarianSantos14/inkora-books.git
 ```
 
-#### 2️⃣ Mova o projeto
+#### 2. Mova o projeto
 
 Coloque a pasta `inkora-books` dentro do diretório:
 
@@ -109,9 +108,35 @@ Coloque a pasta `inkora-books` dentro do diretório:
 C:\xampp\htdocs\
 ```
 
-#### 3️⃣ Configure o ambiente
+#### 3. Importe o banco de dados
 
-Crie um arquivo `.env` na raiz do projeto com as configurações do banco de dados:
+1. Inicie o **Apache** e o **MySQL** pelo painel do XAMPP.
+2. Acesse o phpMyAdmin: http://localhost/phpmyadmin.
+3. Clique na opção **Importar**.
+4. Selecione o arquivo **[`schema.sql`](schema.sql)** que está na pasta raiz do projeto.
+5. Clique em **Importar** ou **Executar** para concluir.
+
+> **Importante:** não é necessário criar o banco manualmente. O arquivo `schema.sql` cria o banco `inkora_books` e todas as tabelas automaticamente.
+
+**Dados de demonstração (opcional)**
+
+Se quiser testar a plataforma com livros, autores e leitores fictícios, importe também o arquivo [`database/demo_data.sql`](database/demo_data.sql), depois de importar o `schema.sql`.
+
+As contas de demonstração usam a senha:
+
+```text
+Leitura123!
+```
+
+O administrador de demonstração pode ser acessado com:
+- **E-mail:** `admin.demo@example.test`
+- **Senha:** `Leitura123!`
+
+Se preferir começar com o banco vazio, não importe o arquivo de demonstração e siga para a próxima etapa para criar seu próprio administrador.
+
+#### 4. Configure o ambiente
+
+Crie um arquivo chamado `.env` na raiz do projeto (na mesma pasta do `index.php`) com as configurações do banco:
 
 ```env
 DB_HOST=localhost
@@ -121,26 +146,21 @@ DB_USER=root
 DB_PASS=
 ```
 
-Altere os valores conforme a configuração do seu MySQL.
+Ajuste os valores conforme a configuração do seu MySQL. No XAMPP padrão, o usuário costuma ser `root` e a senha fica vazia.
 
-#### 4️⃣ Configure o banco de dados
+#### 5. Crie o primeiro administrador
 
-1. Inicie o Apache e o MySQL pelo XAMPP.
-2. Acesse o phpMyAdmin.
-3. Importe o arquivo `schema.sql`.
-4. Para carregar dados de demonstração, importe `database/demo_data.sql`.
-
-#### 5️⃣ Crie o primeiro administrador
-
-Acesse:
+Se você **não importou os dados de demonstração**, acesse:
 
 ```text
 http://localhost/inkora-books/setup.php
 ```
 
-Preencha o formulário para criar a primeira conta administradora.
+Preencha o formulário para cadastrar seu nome, e-mail e senha de administrador.
 
-#### 6️⃣ Acesse o projeto
+Se você importou `database/demo_data.sql`, essa etapa não é necessária: use a conta de demonstração informada acima.
+
+#### 6. Acesse o projeto
 
 ```text
 http://localhost/inkora-books/
@@ -166,7 +186,7 @@ Durante o desenvolvimento do Inkora Books, foram trabalhados conceitos important
 
 ---
 
-Obs: Dados fictícios e demonstração
+### Dados fictícios e demonstração
 
 Para fins de demonstração e desenvolvimento, a plataforma utiliza dados fictícios.
 
