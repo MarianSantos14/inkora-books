@@ -71,9 +71,7 @@ O projeto foi desenvolvido como **trabalho do 4º bimestre do curso técnico de 
 
 #### Pré-requisitos
 
-Antes de começar, você precisa ter:
-
-- PHP 8.0 ou superior.
+- PHP 8.2 ou superior.
 - MySQL ou MariaDB.
 - XAMPP ou outro servidor local.
 - Navegador atualizado.
@@ -92,9 +90,17 @@ Coloque a pasta `inkora-books` dentro do diretório:
 C:\xampp\htdocs\
 ```
 
-#### 3️⃣ Configure o ambiente
+#### 3️⃣ Importe o banco de dados
 
-Crie um arquivo `.env` na raiz do projeto com as configurações do banco de dados:
+1. Inicie o **Apache** e o **MySQL** pelo painel do XAMPP.
+2. Acesse o phpMyAdmin: http://localhost/phpmyadmin.
+3. Clique na opção **Importar**.
+4. Selecione o arquivo **[`database/schema.sql`](database/schema.sql)** 
+5. Clique em **Importar** ou **Executar** para concluir.
+
+#### 4. Configure o ambiente
+
+Crie um arquivo chamado `.env` na raiz do projeto com as configurações do banco:
 
 ```env
 DB_HOST=localhost
@@ -104,9 +110,9 @@ DB_USER=root
 DB_PASS=
 ```
 
-Altere os valores conforme a configuração do seu MySQL.
+Ajuste os valores conforme a configuração do seu MySQL. No XAMPP padrão, o usuário costuma ser `root` e a senha fica vazia.
 
-#### 4️⃣ Configure o banco de dados
+#### 5. Crie o primeiro administrador
 
 1. Inicie o Apache e o MySQL pelo XAMPP.
 2. Acesse o phpMyAdmin.
@@ -115,13 +121,13 @@ Altere os valores conforme a configuração do seu MySQL.
 
 #### 5️⃣ Crie o primeiro administrador
 
-Acesse:
-
 ```text
 http://localhost/inkora-books/setup.php
 ```
 
-Preencha o formulário para criar a primeira conta administradora.
+Preencha o formulário para cadastrar seu nome, e-mail e senha de administrador.
+
+Obs: Se você importou `database/demo_data.sql`, essa etapa não é necessária: use a conta de demonstração informada acima.
 
 #### 6️⃣ Acesse o projeto
 
@@ -149,7 +155,7 @@ Durante o desenvolvimento do Inkora Books, foram trabalhados conceitos important
 
 ---
 
-Obs: Dados fictícios e demonstração
+### Dados fictícios e demonstração
 
 Para fins de demonstração e desenvolvimento, a plataforma utiliza dados fictícios.
 
