@@ -186,7 +186,7 @@ require __DIR__ . '/../includes/header.php';
     <a class="text-link" href="<?= url('livros/form.php') ?>">Preencher manualmente →</a>
 </section>
 
-<form class="editor catalog-search-form" method="get" action="<?= url('livros/buscar.php') ?>">
+<form class="editor catalog-search-form" method="get" action="<?= url('livros/buscar.php') ?>" role="search">
     <label for="catalog-query">Pesquisar na Open Library</label>
     <div class="catalog-search-controls">
         <select name="tipo" aria-label="Campo da pesquisa">
@@ -195,7 +195,7 @@ require __DIR__ . '/../includes/header.php';
             <option value="autor" <?= $type === 'autor' ? 'selected' : '' ?>>Autor</option>
         </select>
         <input id="catalog-query" name="q" value="<?= e($term) ?>" placeholder="Digite o título, ISBN ou autor" required>
-        <button class="button" type="submit">Pesquisar</button>
+        <button class="button search-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>Pesquisar</button>
     </div>
     <?php if ($errorMessage): ?><p class="catalog-search-message error"><?= e($errorMessage) ?></p><?php endif; ?>
     <?php if ($term !== '' && !$errorMessage && !$results): ?><p class="catalog-search-message">Nenhum resultado encontrado. Tente outros termos ou preencha o livro manualmente.</p><?php endif; ?>

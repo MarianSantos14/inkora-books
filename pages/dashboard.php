@@ -7,7 +7,11 @@ $stats = $pdo->query("SELECT COUNT(*) total,COALESCE(SUM(status='lido'),0) lidos
 $topBooks = $pdo->query("SELECT l.id,l.titulo,l.autor,l.capa,COUNT(e.id) leituras FROM livro l JOIN estante e ON e.livro_id=l.id AND e.status='lido' GROUP BY l.id,l.titulo,l.autor,l.capa ORDER BY leituras DESC,l.titulo ASC LIMIT 10")->fetchAll();
 $topAuthors = $pdo->query("SELECT l.autor,COUNT(e.id) leituras FROM livro l JOIN estante e ON e.livro_id=l.id AND e.status='lido' GROUP BY l.autor ORDER BY leituras DESC,l.autor ASC LIMIT 5")->fetchAll();
 $topPublishers = $pdo->query("SELECT COALESCE(NULLIF(TRIM(l.editora),''),'Editora não informada') editora,COUNT(e.id) leituras FROM livro l JOIN estante e ON e.livro_id=l.id AND e.status='lido' GROUP BY COALESCE(NULLIF(TRIM(l.editora),''),'Editora não informada') ORDER BY leituras DESC,editora ASC LIMIT 3")->fetchAll();
-$allBooks = $pdo->query('SELECT id,titulo,autor,editora,ano_publicacao,capa FROM livro ORDER BY titulo ASC')->fetchAll();
+$bookSearch = trim((string)($_GET['q'] ?? ''));
+$allBooksQuery = $pdo->prepare('SELECT id,titulo,autor,editora,ano_publicacao,capa FROM livro WHERE titulo LIKE ? OR autor LIKE ? OR editora LIKE ? ORDER BY titulo ASC');
+$bookSearchPattern = '%' . $bookSearch . '%';
+$allBooksQuery->execute([$bookSearchPattern, $bookSearchPattern, $bookSearchPattern]);
+$allBooks = $allBooksQuery->fetchAll();
 $chartColors = ['#3568a8', '#4f87c3', '#6e9b83', '#c57670', '#8b7db0'];
 $chartPayload = [
     'books' => array_map(static fn($row) => ['title' => $row['titulo'], 'author' => $row['autor'], 'reads' => (int)$row['leituras'], 'cover' => !empty($row['capa']) ? image_url($row['capa'], '') : null, 'url' => url('livros/ver.php?id=') . (int)$row['id']], $topBooks),
@@ -76,10 +80,14 @@ require __DIR__ . '/../includes/header.php';
     <div>
         <div class="eyebrow">CATÁLOGO COMPLETO</div>
         <h2>Todos os livros</h2>
-    </div><span class="status-pill"><?= number_format(count($allBooks), 0, ',', '.') ?> livros</span>
+    </div><span class="status-pill"><?= number_format(count($allBooks), 0, ',', '.') ?> <?= $bookSearch !== '' ? 'resultados' : 'livros' ?></span>
 </section>
+<form class="list-search dashboard-book-search" method="get" role="search">
+    <label for="dashboard-book-search">Pesquisar livros por título, autor ou editora</label>
+    <div class="search-controls"><input id="dashboard-book-search" type="search" name="q" value="<?= e($bookSearch) ?>" placeholder="Título, autor ou editora" autocomplete="off"><button class="button button-small search-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>Pesquisar</button><?php if ($bookSearch !== ''): ?><a class="search-clear" href="<?= url('pages/dashboard.php') ?>">Limpar</a><?php endif; ?></div>
+</form>
 <?php if (!$allBooks): ?><div class="empty-state">
-        <p>Nenhum livro cadastrado no catálogo.</p>
+        <p><?= $bookSearch !== '' ? 'Nenhum livro encontrado.' : 'Nenhum livro cadastrado no catálogo.' ?></p>
     </div><?php else: ?>
     <div class="table-wrap dashboard-all-books">
         <table>

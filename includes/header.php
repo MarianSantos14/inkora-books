@@ -2,6 +2,28 @@
 $pageTitle = $pageTitle ?? 'Inkora Books';
 $flashMessage = $_SESSION['flash'] ?? null;
 unset($_SESSION['flash']);
+$navCurrentPath = parse_url((string)($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH) ?: '/';
+$navBasePath = rtrim(BASE_URL, '/');
+if ($navBasePath !== '' && ($navCurrentPath === $navBasePath || str_starts_with($navCurrentPath, $navBasePath . '/'))) {
+    $navCurrentPath = substr($navCurrentPath, strlen($navBasePath));
+}
+$navCurrentPath = rtrim($navCurrentPath, '/');
+$navActive = '';
+if ($navCurrentPath === '' || $navCurrentPath === '/index.php') {
+    $navActive = 'home';
+} elseif (str_starts_with($navCurrentPath, '/livros')) {
+    $navActive = 'books';
+} elseif (str_starts_with($navCurrentPath, '/autores') || ($navCurrentPath === '/usuarios/ver.php' && !empty($isAuthor))) {
+    $navActive = 'authors';
+} elseif (str_starts_with($navCurrentPath, '/clientes')) {
+    $navActive = 'community';
+} elseif (str_starts_with($navCurrentPath, '/estante')) {
+    $navActive = 'shelf';
+} elseif (str_starts_with($navCurrentPath, '/usuarios')) {
+    $navActive = 'users';
+} elseif ($navCurrentPath === '/pages/dashboard.php') {
+    $navActive = 'dashboard';
+}
 ?>
 <!doctype html>
 <html lang="pt-BR" data-theme="light">
@@ -26,12 +48,12 @@ unset($_SESSION['flash']);
             <button class="nav-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="site-menu" data-nav-toggle><span></span><span></span><span></span></button>
             <div class="topbar-menu" id="site-menu" data-site-menu>
                 <nav aria-label="Navegação principal">
-                    <a href="<?= url('') ?>">Início</a>
-                    <a href="<?= url('livros/') ?>">Livros</a>
-                    <a href="<?= url('autores/') ?>">Autores</a>
-                    <a href="<?= url('clientes/') ?>">Comunidade</a>
-                    <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?><a href="<?= url('estante/') ?>">Minha estante</a><?php endif; ?>
-                    <?php if (admin()): ?><a href="<?= url('usuarios/') ?>">Usuários</a><a href="<?= url('pages/dashboard.php') ?>">Painel</a><?php endif; ?>
+                    <a href="<?= url('') ?>" <?= $navActive === 'home' ? 'aria-current="page"' : '' ?>>Início</a>
+                    <a href="<?= url('livros/') ?>" <?= $navActive === 'books' ? 'aria-current="page"' : '' ?>>Livros</a>
+                    <a href="<?= url('autores/') ?>" <?= $navActive === 'authors' ? 'aria-current="page"' : '' ?>>Autores</a>
+                    <a href="<?= url('clientes/') ?>" <?= $navActive === 'community' ? 'aria-current="page"' : '' ?>>Comunidade</a>
+                    <?php if (($_SESSION['auth']['kind'] ?? '') === 'cliente'): ?><a href="<?= url('estante/') ?>" <?= $navActive === 'shelf' ? 'aria-current="page"' : '' ?>>Minha estante</a><?php endif; ?>
+                    <?php if (admin()): ?><a href="<?= url('usuarios/') ?>" <?= $navActive === 'users' ? 'aria-current="page"' : '' ?>>Usuários</a><a href="<?= url('pages/dashboard.php') ?>" <?= $navActive === 'dashboard' ? 'aria-current="page"' : '' ?>>Painel</a><?php endif; ?>
                 </nav>
                 <div class="nav-right">
                     <button class="icon-button" data-theme-toggle aria-label="Alternar tema">◐</button>

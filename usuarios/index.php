@@ -2,7 +2,11 @@
 require_once __DIR__ . '/../includes/functions.php';
 require_admin();
 $pdo = db();
-$users = $pdo->query('SELECT id,nome,email,tipo,foto,bio,criado_em FROM usuario ORDER BY tipo,nome')->fetchAll();
+$search = trim((string)($_GET['q'] ?? ''));
+$usersQuery = $pdo->prepare('SELECT id,nome,email,tipo,foto,bio,criado_em FROM usuario WHERE nome LIKE ? OR email LIKE ? OR tipo LIKE ? ORDER BY tipo,nome');
+$searchPattern = '%' . $search . '%';
+$usersQuery->execute([$searchPattern, $searchPattern, $searchPattern]);
+$users = $usersQuery->fetchAll();
 $roleCounts = $pdo->query("SELECT SUM(tipo='admin') admins, SUM(tipo='autor') autores FROM usuario")->fetch();
 $edit = null;
 if (isset($_GET['id'])) {
@@ -33,13 +37,27 @@ require __DIR__ . '/../includes/header.php';
                                                                                                                                                                                                                                                                                                                     require __DIR__ . '/../includes/photo_picker.php'; ?></div>
     <div class="form-actions"><button class="button">Salvar usuário</button><?php if ($edit): ?><a class="text-link" href="<?= url('usuarios/') ?>">Cancelar</a><?php endif; ?></div>
 </form>
-<div class="people-grid"><?php foreach ($users as $user): ?><article class="person-card"><img src="<?= e(image_url($user['foto'] ?? null, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80')) ?>" alt="Foto de <?= e($user['nome']) ?>">
-            <div>
-                <h3><?= e($user['nome']) ?></h3>
-                <p><?= e($user['email']) ?></p><small><span class="status-pill"><?= e($user['tipo'] === 'admin' ? 'Administrador' : 'Autora/autor') ?></span></small>
-                <div class="manage-links"><a href="ver.php?id=<?= $user['id'] ?>">Visualizar</a><a href="?id=<?= $user['id'] ?>">Editar</a><?php if ((int)$user['id'] !== id()): ?><form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Excluir este usuÃƒÂ¡rio e sua foto local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_user"><input type="hidden" name="id" value="<?= $user['id'] ?>"><button>Excluir</button></form><?php endif; ?></div>
-            </div>
-        </article><?php endforeach; ?></div>
+<form class="list-search" method="get" role="search">
+    <label for="user-search">Pesquisar usuários por nome, e-mail ou perfil</label>
+    <div class="search-controls"><input id="user-search" type="search" name="q" value="<?= e($search) ?>" placeholder="Nome, e-mail ou perfil" autocomplete="off"><button class="button button-small search-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>Pesquisar</button><?php if ($search !== ''): ?><a class="search-clear" href="<?= url('usuarios/') ?>">Limpar</a><?php endif; ?></div>
+</form>
+<?php if (!$users): ?><div class="empty-state"><h2><?= $search !== '' ? 'Nenhum usuário encontrado.' : 'Nenhum usuário cadastrado.' ?></h2></div><?php else: ?>
+<div class="table-wrap">
+    <table class="user-admin-table">
+        <thead><tr><th>Foto</th><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Cadastro</th><th>Ações</th></tr></thead>
+        <tbody><?php foreach ($users as $user): ?>
+            <tr>
+                <td><img class="admin-user-thumbnail" src="<?= e(image_url($user['foto'] ?? null, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80')) ?>" alt="Foto de <?= e($user['nome']) ?>" loading="lazy"></td>
+                <td><?= e($user['nome']) ?></td>
+                <td><?= e($user['email']) ?></td>
+                <td><span class="status-pill"><?= e($user['tipo'] === 'admin' ? 'Administrador' : 'Autora/autor') ?></span></td>
+                <td><?= e(date('d/m/Y', strtotime($user['criado_em']))) ?></td>
+                <td><div class="manage-links"><a href="ver.php?id=<?= (int)$user['id'] ?>">Visualizar</a><a href="?id=<?= (int)$user['id'] ?>&amp;q=<?= urlencode($search) ?>">Editar</a><?php if ((int)$user['id'] !== id()): ?><form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Excluir este usuário e sua foto local?"><input type="hidden" name="csrf" value="<?= e(csrf()) ?>"><input type="hidden" name="action" value="delete_user"><input type="hidden" name="id" value="<?= (int)$user['id'] ?>"><button>Excluir</button></form><?php endif; ?></div></td>
+            </tr>
+        <?php endforeach; ?></tbody>
+    </table>
+</div>
+<?php endif; ?>
 <script>
     (() => {
         const role = document.getElementById("authorRoleSelect");

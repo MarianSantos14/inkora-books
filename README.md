@@ -67,23 +67,6 @@ O projeto foi desenvolvido como **trabalho do 4º bimestre do curso técnico de 
 
 ---
 
-### Banco de dados
-
-O projeto utiliza MySQL para armazenar informações de usuários, clientes, livros, estantes, avaliações e relacionamentos entre leitores e autores.
-
-Principais tabelas:
-
-- `usuario` — usuários da equipe e autores.
-- `cliente` — leitores cadastrados.
-- `livro` — catálogo de livros.
-- `estante` — organização das leituras dos clientes.
-- `autor_seguidor` — relacionamento entre leitores e autores.
-- `avaliacao_livro` — avaliações e comentários.
-- `galeria_autor` — imagens dos perfis de autores.
-- `isbn_cache` — armazenamento temporário de consultas à Open Library.
-
----
-
 ### Como rodar o projeto
 
 #### Pré-requisitos
@@ -127,7 +110,7 @@ Altere os valores conforme a configuração do seu MySQL.
 
 1. Inicie o Apache e o MySQL pelo XAMPP.
 2. Acesse o phpMyAdmin.
-3. Importe o arquivo `schema.sql`.
+3. Importe o arquivo `database/schema.sql`.
 4. Para carregar dados de demonstração, importe `database/demo_data.sql`.
 
 #### 5️⃣ Crie o primeiro administrador
