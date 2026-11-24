@@ -30,15 +30,13 @@ require __DIR__ . '/includes/header.php';
     <section class="home-book-carousel" aria-label="Capas de livros em destaque">
         <div class="home-book-carousel-viewport">
             <div class="home-book-carousel-track">
-                <?php for ($copy = 0; $copy < 2; $copy++): ?>
-                    <div class="home-book-carousel-group" <?= $copy ? 'aria-hidden="true" inert' : '' ?>>
-                        <?php foreach ($carouselBooks as $book): ?>
-                            <a class="home-book-carousel-cover" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" aria-label="Abrir <?= e($book['titulo']) ?>" tabindex="<?= $copy ? '-1' : '0' ?>">
-                                <?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="home-carousel-no-cover" aria-label="Livro sem capa"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M14 7h37v50H14z" fill="#aab3bf"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></span><?php endif; ?>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endfor; ?>
+                <div class="home-book-carousel-group">
+                    <?php foreach ($carouselBooks as $book): ?>
+                        <a class="home-book-carousel-cover" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" aria-label="Abrir <?= e($book['titulo']) ?>">
+                            <?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="home-carousel-no-cover" aria-label="Livro sem capa"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M14 7h37v50H14z" fill="#aab3bf"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></span><?php endif; ?>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
     </section>

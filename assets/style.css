@@ -5413,22 +5413,13 @@ tbody tr:hover {
 }
 
 .home-book-carousel-viewport {
-    overflow-x: hidden;
-    overflow-y: hidden;
-    padding: 24px 0 20px;
-    mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-    scrollbar-width: none;
-    -ms-overflow-style: none
-}
-
-.home-book-carousel-viewport::-webkit-scrollbar {
-    display: none
+    overflow: hidden;
+    padding: 24px 0 20px
 }
 
 .home-book-carousel-track {
     display: flex;
-    width: 200%;
-    animation: home-cover-scroll 54s linear infinite
+    width: 100%
 }
 
 .home-book-carousel-group {
@@ -5437,8 +5428,8 @@ tbody tr:hover {
     justify-content: center;
     gap: 23px;
     box-sizing: border-box;
-    width: 50%;
-    flex: 0 0 50%;
+    width: 100%;
+    flex-wrap: wrap;
     padding: 0 11px
 }
 
@@ -5502,16 +5493,6 @@ tbody tr:hover {
 
 .home-book-carousel-group .home-book-carousel-cover:nth-child(8n) {
     transform: translateY(8px) rotate(3deg)
-}
-
-@keyframes home-cover-scroll {
-    from {
-        transform: translateX(0)
-    }
-
-    to {
-        transform: translateX(-50%)
-    }
 }
 
 .home-books-heading {
@@ -5591,16 +5572,7 @@ tbody tr:hover {
 
 @media(prefers-reduced-motion:reduce) {
     .home-book-carousel-viewport {
-        overflow-x: auto;
-        mask-image: none
-    }
-
-    .home-book-carousel-track {
-        animation: none
-    }
-
-    .home-book-carousel-group[aria-hidden="true"] {
-        display: none
+        overflow: hidden
     }
 }
 
