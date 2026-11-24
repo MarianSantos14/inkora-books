@@ -209,7 +209,7 @@ require __DIR__ . '/../includes/header.php';
                 <?php if ($result['capa']): ?>
                     <img class="catalog-result-cover" src="<?= e($result['capa']) ?>" alt="Capa de <?= e($result['titulo']) ?>" loading="lazy">
                 <?php else: ?>
-                    <div class="catalog-result-cover catalog-result-no-cover" aria-label="Livro sem capa"><span>Sem capa</span></div>
+                    <div class="catalog-result-cover catalog-result-no-cover" aria-label="Livro sem capa"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M14 7h37v50H14z" fill="#aab3bf"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></div>
                 <?php endif; ?>
                 <div class="catalog-result-info">
                     <h2><?= e($result['titulo']) ?></h2>

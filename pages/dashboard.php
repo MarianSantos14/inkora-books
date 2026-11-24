@@ -46,7 +46,7 @@ require __DIR__ . '/../includes/header.php';
     <?php if (!$topBooks): ?><div class="dashboard-chart-empty">Ainda não há leituras concluídas.</div><?php else: ?>
         <div class="dashboard-books-scroll" role="region" tabindex="0" aria-label="Gráfico e capas dos livros mais lidos">
             <div class="chart-canvas-wrap books-chart-wrap"><canvas id="booksChart" aria-label="Gráfico de barras dos dez livros mais lidos"></canvas></div>
-            <div class="book-cover-list" style="--book-count:<?= count($topBooks) ?>"><?php foreach ($topBooks as $index => $book): ?><a class="book-cover-card" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" title="<?= e($book['titulo'] . ' — ' . $book['autor']) ?>"><span class="book-cover-rank"><?= $index + 1 ?></span><span class="book-cover-image-wrap"><?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="book-cover-placeholder">✦</span><?php endif; ?></span><strong><?= e($book['titulo']) ?></strong><small><?= e($book['autor']) ?></small></a><?php endforeach; ?></div>
+            <div class="book-cover-list" style="--book-count:<?= count($topBooks) ?>"><?php foreach ($topBooks as $index => $book): ?><a class="book-cover-card" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" title="<?= e($book['titulo'] . ' — ' . $book['autor']) ?>"><span class="book-cover-rank"><?= $index + 1 ?></span><span class="book-cover-image-wrap"><?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="book-cover-placeholder"><svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true"><path d="M14 7h37v50H14z" fill="#aab3bf"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></span><?php endif; ?></span><strong><?= e($book['titulo']) ?></strong><small><?= e($book['autor']) ?></small></a><?php endforeach; ?></div>
         </div>
     <?php endif; ?>
 </section>
@@ -82,9 +82,9 @@ require __DIR__ . '/../includes/header.php';
         <h2>Todos os livros</h2>
     </div><span class="status-pill"><?= number_format(count($allBooks), 0, ',', '.') ?> <?= $bookSearch !== '' ? 'resultados' : 'livros' ?></span>
 </section>
-<form class="list-search dashboard-book-search" method="get" role="search">
+<form id="dashboard-book-search-form" class="list-search dashboard-book-search" method="get" action="<?= url('pages/dashboard.php') ?>#dashboard-book-search-form" role="search">
     <label for="dashboard-book-search">Pesquisar livros por título, autor ou editora</label>
-    <div class="search-controls"><input id="dashboard-book-search" type="search" name="q" value="<?= e($bookSearch) ?>" placeholder="Título, autor ou editora" autocomplete="off"><button class="button button-small search-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>Pesquisar</button><?php if ($bookSearch !== ''): ?><a class="search-clear" href="<?= url('pages/dashboard.php') ?>">Limpar</a><?php endif; ?></div>
+    <div class="search-controls"><input id="dashboard-book-search" type="search" name="q" value="<?= e($bookSearch) ?>" placeholder="Título, autor ou editora" autocomplete="off"><button class="button button-small search-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>Pesquisar</button><?php if ($bookSearch !== ''): ?><a class="search-clear" href="<?= url('pages/dashboard.php') ?>#dashboard-book-search-form">Limpar</a><?php endif; ?></div>
 </form>
 <?php if (!$allBooks): ?><div class="empty-state">
         <p><?= $bookSearch !== '' ? 'Nenhum livro encontrado.' : 'Nenhum livro cadastrado no catálogo.' ?></p>

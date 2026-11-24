@@ -5427,15 +5427,18 @@ tbody tr:hover {
 
 .home-book-carousel-track {
     display: flex;
-    width: max-content;
+    width: 200%;
     animation: home-cover-scroll 54s linear infinite
 }
 
 .home-book-carousel-group {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 23px;
-    width: max-content;
+    box-sizing: border-box;
+    width: 50%;
+    flex: 0 0 50%;
     padding: 0 11px
 }
 

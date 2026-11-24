@@ -80,7 +80,7 @@ function csrf_check(): void
 }
 function cover(string $title, ?string $url): string
 {
-    return $url ?: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=500&q=80';
+    return $url ?: url('assets/icons/book-placeholder.svg');
 }
 function image_upload(string $field, string $folder): ?string
 {

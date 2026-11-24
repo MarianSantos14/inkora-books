@@ -3,8 +3,8 @@ require_once __DIR__ . '/includes/functions.php';
 require_once __DIR__ . '/includes/book_cards.php';
 
 $pdo = db();
-$books = $pdo->query('SELECT * FROM livro ORDER BY criado_em DESC LIMIT 8')->fetchAll();
-$carouselBooks = $pdo->query('SELECT id,titulo,capa FROM livro ORDER BY criado_em DESC LIMIT 16')->fetchAll();
+$books = $pdo->query("SELECT * FROM livro WHERE capa IS NOT NULL AND TRIM(capa)<>'' ORDER BY criado_em DESC LIMIT 8")->fetchAll();
+$carouselBooks = $pdo->query("SELECT id,titulo,capa FROM livro WHERE capa IS NOT NULL AND TRIM(capa)<>'' ORDER BY criado_em DESC LIMIT 10")->fetchAll();
 $community = $pdo->query("SELECT id,nome,foto FROM cliente WHERE foto IS NOT NULL AND TRIM(foto)<>'' ORDER BY id LIMIT 3")->fetchAll();
 $pageTitle = 'Histórias que ficam com você';
 require __DIR__ . '/includes/header.php';
@@ -34,7 +34,7 @@ require __DIR__ . '/includes/header.php';
                     <div class="home-book-carousel-group" <?= $copy ? 'aria-hidden="true" inert' : '' ?>>
                         <?php foreach ($carouselBooks as $book): ?>
                             <a class="home-book-carousel-cover" href="<?= url('livros/ver.php') ?>?id=<?= (int)$book['id'] ?>" aria-label="Abrir <?= e($book['titulo']) ?>" tabindex="<?= $copy ? '-1' : '0' ?>">
-                                <?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="home-carousel-no-cover" aria-hidden="true">▤</span><?php endif; ?>
+                                <?php if (!empty($book['capa'])): ?><img src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy"><?php else: ?><span class="home-carousel-no-cover" aria-label="Livro sem capa"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M14 7h37v50H14z" fill="#aab3bf"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></span><?php endif; ?>
                             </a>
                         <?php endforeach; ?>
                     </div>

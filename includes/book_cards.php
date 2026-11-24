@@ -33,8 +33,8 @@ function render_books(array $items, bool $manage = false, bool $showSynopsis = t
                         <img class="book-cover" src="<?= e(image_url($book['capa'], '')) ?>" alt="Capa de <?= e($book['titulo']) ?>" loading="lazy">
                     <?php else: ?>
                         <div class="book-cover-placeholder" aria-label="Livro sem capa"><svg viewBox="0 0 64 64" aria-hidden="true">
-                                <path d="M12 13h19c6 0 10 4 10 10v29c0-5-4-8-10-8H12z"></path>
-                                <path d="M52 13H33c-6 0-10 4-10 10v29c0-5 4-8 10-8h19z"></path>
+                                <path d="M14 7h37v50H14z"></path>
+                                <path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path>
                             </svg></div>
                     <?php endif; ?>
                     <div class="book-info">

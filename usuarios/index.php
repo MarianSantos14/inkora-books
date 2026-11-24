@@ -47,7 +47,7 @@ require __DIR__ . '/../includes/header.php';
         <thead><tr><th>Foto</th><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Cadastro</th><th>Ações</th></tr></thead>
         <tbody><?php foreach ($users as $user): ?>
             <tr>
-                <td><img class="admin-user-thumbnail" src="<?= e(image_url($user['foto'] ?? null, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80')) ?>" alt="Foto de <?= e($user['nome']) ?>" loading="lazy"></td>
+                <td><img class="admin-user-thumbnail" src="<?= e(image_url($user['foto'] ?? null, url('assets/icons/user-placeholder.svg'))) ?>" alt="Foto de <?= e($user['nome']) ?>" loading="lazy"></td>
                 <td><?= e($user['nome']) ?></td>
                 <td><?= e($user['email']) ?></td>
                 <td><span class="status-pill"><?= e($user['tipo'] === 'admin' ? 'Administrador' : 'Autora/autor') ?></span></td>

@@ -21,7 +21,7 @@ require __DIR__ . '/../includes/header.php'; ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                     require __DIR__ . '/../includes/photo_picker.php'; ?></div>
         <div class="form-actions"><button class="button">Salvar cliente</button><?php if ($edit): ?><a class="text-link" href="<?= url('clientes/') ?>">Cancelar</a><?php endif; ?></div>
     </form><?php endif; ?>
-<div class="people-grid"><?php foreach ($clients as $c): ?><article class="person-card"><img src="<?= e(image_url($c['foto'] ?? null, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80')) ?>" alt="Foto de <?= e($c['nome']) ?>">
+<div class="people-grid"><?php foreach ($clients as $c): ?><article class="person-card"><img src="<?= e(image_url($c['foto'] ?? null, url('assets/icons/user-placeholder.svg'))) ?>" alt="Foto de <?= e($c['nome']) ?>">
             <div>
                 <h3><?= e($c['nome']) ?></h3>
                 <p><?= e($c['email']) ?></p><small>Leitor desde <?= date('m/Y', strtotime($c['criado_em'])) ?></small><?php if (staff()): ?><div class="manage-links"><?php if (admin()): ?><a href="ver.php?id=<?= $c['id'] ?>">Visualizar</a><?php endif; ?><a href="?id=<?= $c['id'] ?>">Editar</a>

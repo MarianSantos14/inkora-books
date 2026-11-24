@@ -17,7 +17,7 @@ require __DIR__ . '/../includes/header.php';
 ?>
 <section class="page-heading"><div><div class="eyebrow">PERFIL DE LEITOR</div><h1><?=e($client['nome'])?></h1><p>Cadastro desde <?=date('d/m/Y', strtotime($client['criado_em']))?></p></div><a class="text-link" href="<?= url('clientes/') ?>">← Voltar aos clientes</a></section>
 <section class="editor admin-detail">
-    <img class="admin-detail-avatar" src="<?=e(image_url($client['foto'] ?? null, 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80'))?>" alt="Foto de <?=e($client['nome'])?>">
+    <img class="admin-detail-avatar" src="<?=e(image_url($client['foto'] ?? null, url('assets/icons/user-placeholder.svg')))?>" alt="Foto de <?=e($client['nome'])?>">
     <div class="admin-detail-info"><h2><?=e($client['nome'])?></h2><p><?=e($client['email'])?></p><p><?=e($client['telefone'] ?: 'Telefone não informado')?></p><div class="form-actions"><a class="button button-small" href="<?= url('clientes/') ?>?id=<?=$client['id']?>">Editar cliente</a><form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Excluir este cliente e sua estante?"><input type="hidden" name="csrf" value="<?=e(csrf())?>"><input type="hidden" name="action" value="delete_client"><input type="hidden" name="id" value="<?=$client['id']?>"><button class="danger-button">Excluir cliente</button></form></div></div>
 </section>
 <section class="section-head"><div><div class="eyebrow">LEITURA</div><h2>Estante de <?=e($client['nome'])?></h2></div></section>

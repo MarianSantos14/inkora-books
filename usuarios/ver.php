@@ -13,11 +13,11 @@ if (!$isAuthor && !admin()) {
     show_error_page(404);
 }
 if ($isAuthor) {
-    $booksQuery = db()->prepare('SELECT id,titulo,autor,capa,criado_em,usuario_id FROM livro WHERE usuario_id=? ORDER BY criado_em DESC');
-    $booksQuery->execute([$userId]);
+    $booksQuery = db()->prepare('SELECT id,titulo,autor,capa,criado_em,usuario_id FROM livro WHERE autor=? ORDER BY criado_em DESC');
+    $booksQuery->execute([$user['nome']]);
     $books = $booksQuery->fetchAll();
-    $statsQuery = db()->prepare('SELECT COUNT(DISTINCT l.id) AS total, AVG(a.nota) AS media, COUNT(a.id) AS avaliacoes FROM livro l LEFT JOIN avaliacao_livro a ON a.livro_id=l.id WHERE l.usuario_id=?');
-    $statsQuery->execute([$userId]);
+    $statsQuery = db()->prepare('SELECT COUNT(DISTINCT l.id) AS total, AVG(a.nota) AS media, COUNT(a.id) AS avaliacoes FROM livro l LEFT JOIN avaliacao_livro a ON a.livro_id=l.id WHERE l.autor=?');
+    $statsQuery->execute([$user['nome']]);
     $authorStats = $statsQuery->fetch() ?: ['total'=>count($books),'media'=>null,'avaliacoes'=>0];
     $followersQuery = db()->prepare('SELECT COUNT(*) FROM autor_seguidor WHERE autor_id=?');
     $followersQuery->execute([$userId]);
@@ -28,8 +28,8 @@ if ($isAuthor) {
         $followingQuery->execute([id(), $userId]);
         $isFollowing = (bool)$followingQuery->fetchColumn();
     }
-    $ratingQuery = db()->prepare('SELECT livro_id,AVG(nota) AS media,COUNT(*) AS total FROM avaliacao_livro WHERE livro_id IN (SELECT id FROM livro WHERE usuario_id=?) GROUP BY livro_id');
-    $ratingQuery->execute([$userId]);
+    $ratingQuery = db()->prepare('SELECT livro_id,AVG(nota) AS media,COUNT(*) AS total FROM avaliacao_livro WHERE livro_id IN (SELECT id FROM livro WHERE autor=?) GROUP BY livro_id');
+    $ratingQuery->execute([$user['nome']]);
     $bookRatings = [];
     foreach ($ratingQuery->fetchAll() as $ratingRow) $bookRatings[(int)$ratingRow['livro_id']] = $ratingRow;
 }
@@ -52,7 +52,7 @@ require __DIR__ . '/../includes/header.php';
 <?php if ($isAuthor): ?>
 <section class="author-profile-card">
     <div class="author-profile-portrait">
-        <img src="<?=e(image_url($user['foto'] ?? null, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=700&q=85'))?>" alt="Foto de <?=e($user['nome'])?>">
+        <img src="<?=e(image_url($user['foto'] ?? null, url('assets/icons/user-placeholder.svg')))?>" alt="Foto de <?=e($user['nome'])?>">
         <span class="author-profile-role">Autora</span>
     </div>
     <div class="author-profile-main">
@@ -67,7 +67,7 @@ require __DIR__ . '/../includes/header.php';
 </section>
 <?php else: ?>
 <section class="admin-profile-card">
-    <img class="admin-profile-avatar" src="<?=e(image_url($user['foto'] ?? null, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80'))?>" alt="Foto de <?=e($user['nome'])?>">
+    <img class="admin-profile-avatar" src="<?=e(image_url($user['foto'] ?? null, url('assets/icons/user-placeholder.svg')))?>" alt="Foto de <?=e($user['nome'])?>">
     <div class="admin-profile-content">
         <h2><?=e($user['nome'])?></h2>
         <span class="status-pill admin-profile-role">Administrador</span>
@@ -82,8 +82,8 @@ require __DIR__ . '/../includes/header.php';
 <?php if (!$books): ?><div class="empty-state"><h2>Nenhum livro cadastrado por esta autora.</h2></div><?php else: ?>
 <div class="author-book-feed">
 <?php foreach ($books as $book): $bookRating=$bookRatings[(int)$book['id']]??null; ?><article class="author-book-post">
-    <div class="author-book-post-head"><div class="author-post-avatar"><img src="<?=e(image_url($user['foto']??null,'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80'))?>" alt=""></div><div><strong><?=e($user['nome'])?></strong><span>publicou um livro · <?=date('d/m/Y',strtotime($book['criado_em']))?></span></div><a class="author-post-link" href="<?= url('livros/ver.php') ?>?id=<?=$book['id']?>" aria-label="Ver <?=e($book['titulo'])?>">↗</a></div>
-    <a class="author-book-cover-link" href="<?= url('livros/ver.php') ?>?id=<?=$book['id']?>"><?php if(!empty($book['capa'])): ?><img src="<?=e(image_url($book['capa'],''))?>" alt="Capa de <?=e($book['titulo'])?>" loading="lazy"><?php else: ?><div class="author-book-cover-placeholder">▤</div><?php endif; ?></a>
+    <div class="author-book-post-head"><div class="author-post-avatar"><img src="<?=e(image_url($user['foto']??null,url('assets/icons/user-placeholder.svg')))?>" alt=""></div><div><strong><?=e($user['nome'])?></strong><span>publicou um livro · <?=date('d/m/Y',strtotime($book['criado_em']))?></span></div><a class="author-post-link" href="<?= url('livros/ver.php') ?>?id=<?=$book['id']?>" aria-label="Ver <?=e($book['titulo'])?>">↗</a></div>
+    <a class="author-book-cover-link" href="<?= url('livros/ver.php') ?>?id=<?=$book['id']?>"><?php if(!empty($book['capa'])): ?><img src="<?=e(image_url($book['capa'],''))?>" alt="Capa de <?=e($book['titulo'])?>" loading="lazy"><?php else: ?><div class="author-book-cover-placeholder"><svg viewBox="0 0 64 64" width="60" height="60" aria-hidden="true"><path d="M14 7h37v50H14z"></path><path d="M22 8v48M29 17h15M29 23h15M29 29h15" fill="none" stroke="#e3e7ec" stroke-linecap="round" stroke-width="2"></path></svg></div><?php endif; ?></a>
     <div class="author-book-post-content"><div class="author-book-post-rating"><?php if($bookRating): ?><span>★ <?=number_format((float)$bookRating['media'],1,',','.')?></span><small><?= (int)$bookRating['total'] ?> <?=((int)$bookRating['total']===1?'avaliação':'avaliações')?></small><?php else: ?><span class="rating-empty">☆ Ainda sem avaliações</span><?php endif; ?></div><h3><a href="<?= url('livros/ver.php') ?>?id=<?=$book['id']?>"><?=e($book['titulo'])?></a></h3><p>Por <?=e($book['autor'])?></p><?php if (can_manage_book(isset($book['usuario_id'])?(int)$book['usuario_id']:null)): ?><div class="manage-links"><a href="<?= url('livros/form.php') ?>?id=<?=$book['id']?>">Editar</a><form method="post" action="<?= url('pages/actions.php') ?>" data-confirm="Excluir este livro e sua capa local?"><input type="hidden" name="csrf" value="<?=e(csrf())?>"><input type="hidden" name="action" value="delete_book"><input type="hidden" name="id" value="<?=$book['id']?>"><button>Excluir</button></form></div><?php endif; ?></div>
 </article><?php endforeach; ?>
 </div>
